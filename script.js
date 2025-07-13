@@ -104,6 +104,13 @@ mallaEl.parentNode.insertBefore(cargarBtn, mallaEl);
 init();
 
 function init() {
+  // ...
+  // Asociar eventos a botones:
+  guardarBtn.addEventListener("click", guardarEstado);
+  cargarBtn.addEventListener("click", cargarEstado);
+
+  // Resto de la inicialización...
+}
   // 1. Agrupar cursos por ciclo
   const ciclos = {};
   cursos.forEach(c => {
@@ -172,6 +179,10 @@ function renderCiclo(numero, listaCursos) {
 
   mallaEl.appendChild(seccion);
 }
+
+const mallaEl = document.getElementById("malla");
+const guardarBtn = document.getElementById("guardarEstado");
+const cargarBtn = document.getElementById("cargarEstado");
 
 function toggleAprobacion(id) {
   if (aprobados.has(id)) {
