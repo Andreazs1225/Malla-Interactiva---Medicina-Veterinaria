@@ -1,5 +1,5 @@
 /**********************
- *  Datos de la malla *
+ *  Datos de la malla  *
  **********************/
 const cursos = [
   // ---- Primer ciclo ----
@@ -91,47 +91,38 @@ const cursos = [
 const mallaEl = document.getElementById("malla");
 const aprobados = new Set(); // IDs de cursos aprobados
 
-// Botones para guardar/cargar estado
+// Crear botones y agregarlos arriba del contenedor malla
 const guardarBtn = document.createElement("button");
 guardarBtn.textContent = "Guardar Estado";
 const cargarBtn = document.createElement("button");
 cargarBtn.textContent = "Cargar Estado";
 
-// Insertamos los botones arriba de la malla
 mallaEl.parentNode.insertBefore(guardarBtn, mallaEl);
 mallaEl.parentNode.insertBefore(cargarBtn, mallaEl);
+
+guardarBtn.addEventListener("click", guardarEstado);
+cargarBtn.addEventListener("click", cargarEstado);
 
 init();
 
 function init() {
-  // ...
-  // Asociar eventos a botones:
-  guardarBtn.addEventListener("click", guardarEstado);
-  cargarBtn.addEventListener("click", cargarEstado);
-
-  // Resto de la inicialización...
-}
-  // 1. Agrupar cursos por ciclo
+  // 1. Agrupar cursos por ciclo
   const ciclos = {};
   cursos.forEach(c => {
     ciclos[c.ciclo] ??= [];
     ciclos[c.ciclo].push(c);
   });
 
-  // 2. Renderizar cada ciclo + sus cursos
+  // 2. Renderizar cada ciclo + sus cursos
   Object.keys(ciclos)
     .sort((a, b) => a - b)
     .forEach(num => renderCiclo(num, ciclos[num]));
 
-  // 3. Después del primer render, verificar bloqueos
+  // 3. Después del primer render, verificar bloqueos
   refrescarBloqueos();
 
   // 4. Cargar estado guardado si existe
   cargarEstado();
-
-  // 5. Asociar eventos a botones
-  guardarBtn.addEventListener("click", guardarEstado);
-  cargarBtn.addEventListener("click", cargarEstado);
 }
 
 function renderCiclo(numero, listaCursos) {
@@ -157,7 +148,6 @@ function renderCiclo(numero, listaCursos) {
 
     // Click para aprobar/desaprobar manualmente
     card.addEventListener("click", e => {
-      // Evitar que el click en el <input> dispare el toggle
       if (e.target.tagName === "INPUT") return;
       if (card.classList.contains("bloqueado")) return;
       toggleAprobacion(curso.id);
@@ -180,10 +170,6 @@ function renderCiclo(numero, listaCursos) {
   mallaEl.appendChild(seccion);
 }
 
-const mallaEl = document.getElementById("malla");
-const guardarBtn = document.getElementById("guardarEstado");
-const cargarBtn = document.getElementById("cargarEstado");
-
 function toggleAprobacion(id) {
   if (aprobados.has(id)) {
     desaprobarCurso(id);
@@ -196,7 +182,8 @@ function aprobarCurso(id) {
   aprobados.add(id);
   const card = document.querySelector(`[data-id="${id}"]`);
   card.classList.add("aprobado");
-  card.querySelector("input").disabled = false;
+  const input = card.querySelector("input");
+  input.disabled = false;
   refrescarBloqueos();
 }
 
@@ -204,7 +191,6 @@ function desaprobarCurso(id) {
   aprobados.delete(id);
   const card = document.querySelector(`[data-id="${id}"]`);
   card.classList.remove("aprobado");
-  // También limpiar nota al desaprobar
   const input = card.querySelector("input");
   input.value = "";
   input.disabled = true;
@@ -216,14 +202,14 @@ function refrescarBloqueos() {
     const card = document.querySelector(`[data-id="${curso.id}"]`);
     const desbloqueado = curso.prereqs.every(p => aprobados.has(p));
     card.classList.toggle("bloqueado", !desbloqueado && !aprobados.has(curso.id));
-    card.querySelector("input").disabled = !desbloqueado && !aprobados.has(curso.id);
+    const input = card.querySelector("input");
+    input.disabled = !desbloqueado && !aprobados.has(curso.id);
   });
 }
 
 // --- Funciones para guardar y cargar estado ---
 
 function guardarEstado() {
-  // Creamos un objeto con los cursos aprobados y las notas
   const estado = {};
   aprobados.forEach(id => {
     const input = document.querySelector(`[data-id="${id}"] input`);
@@ -233,23 +219,17 @@ function guardarEstado() {
     };
   });
 
-  // Guardamos como JSON
   localStorage.setItem("estadoMalla", JSON.stringify(estado));
   alert("Estado guardado.");
 }
 
 function cargarEstado() {
   const estadoJSON = localStorage.getItem("estadoMalla");
-  if (!estadoJSON) {
-    return; // No hay estado guardado, no alert para no molestar
-  }
+  if (!estadoJSON) return;
 
   const estado = JSON.parse(estadoJSON);
-
-  // Limpiamos todo primero
   aprobados.clear();
 
-  // Restauramos estado
   Object.entries(estado).forEach(([id, data]) => {
     if (data.aprobado) {
       aprobarCurso(id);
