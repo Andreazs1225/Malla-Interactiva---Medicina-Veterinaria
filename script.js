@@ -139,17 +139,6 @@ function renderCiclo(numero, listaCursos) {
       toggleAprobacion(curso.id);
     });
 
-    // Evento al escribir nota
-    const input = card.querySelector("input");
-    input.addEventListener("input", () => {
-      const val = Number(input.value);
-      if (val >= 60) {
-        aprobarCurso(curso.id);
-      } else {
-        desaprobarCurso(curso.id);
-      }
-    });
-
     grid.appendChild(card);
   });
 
