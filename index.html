@@ -2,23 +2,109 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Malla Veterinaria</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Materias Aprobadas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+    h1 {
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      padding: 8px 0;
+      border-bottom: 1px solid #ddd;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    li.aprobada label {
+      color: green;
+      font-weight: bold;
+    }
+    input[type="checkbox"] {
+      margin-right: 12px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Malla curricular – Medicina Veterinaria</h1>
-    <div class="leyenda">
-      <span class="color aprobado">🟩 Aprobado</span>
-      <span class="color reprobado">🟥 Reprobado</span>
-      <span class="color desbloqueado">🔓 Desbloqueado</span>
-      <span class="color bloqueado">🔒 Bloqueado</span>
-    </div>
-  </header>
+  <h1>Materias</h1>
+  <ul id="listaMaterias">
+    <!-- Aquí las materias se cargarán desde JS -->
+  </ul>
 
-  <main id="malla"></main>
+  <script>
+    // Aquí defines tu lista de materias
+    const materias = [
+      "Anatomía",
+      "Fisiología",
+      "Farmacología",
+      "Patología",
+      "Microbiología",
+      "Semiología",
+      "Parasitología",
+      "Cirugía",
+      "Medicina Interna",
+      "Epidemiología"
+    ];
 
-  <script src="script.js"></script>
+    const lista = document.getElementById("listaMaterias");
+
+    // Cargar estado guardado o vacío
+    let estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias")) || {};
+
+    function guardarEstado() {
+      localStorage.setItem("estadoMaterias", JSON.stringify(estadoMaterias));
+    }
+
+    function crearLista() {
+      lista.innerHTML = ""; // limpiar lista
+
+      materias.forEach((mat, index) => {
+        const li = document.createElement("li");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = "chk_" + index;
+        checkbox.checked = estadoMaterias[mat] || false;
+
+        checkbox.addEventListener("change", () => {
+          estadoMaterias[mat] = checkbox.checked;
+          guardarEstado();
+          actualizarEstilo(li, checkbox.checked);
+        });
+
+        const label = document.createElement("label");
+        label.htmlFor = checkbox.id;
+        label.textContent = mat;
+
+        li.appendChild(checkbox);
+        li.appendChild(label);
+
+        // Aplica estilo si ya está marcada
+        actualizarEstilo(li, checkbox.checked);
+
+        lista.appendChild(li);
+      });
+    }
+
+    function actualizarEstilo(li, marcada) {
+      if (marcada) {
+        li.classList.add("aprobada");
+      } else {
+        li.classList.remove("aprobada");
+      }
+    }
+
+    crearLista();
+  </script>
 </body>
 </html>
