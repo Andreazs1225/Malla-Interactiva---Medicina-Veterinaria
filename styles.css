@@ -1,11 +1,11 @@
 /* Paleta de azules */
 :root {
-  --azul-claro: #81c9fa;
-  --azul-intermedio: #2196f3;
-  --azul-intenso: #1465bb;
-  --azul-oscuro: #003785;
+  --azul-claro: #478787;
+  --azul-intermedio: #276969;
+  --azul-intenso: #154d4e;
+  --azul-oscuro: #153435;
   --gris-bloqueado: #cfd8dc;
-  --verde-aprobado: #a5d6a7;
+  --verde-aprobado: #037136;
   --borde-radius: 12px;
   --duracion-transicion: 0.25s;
 }
