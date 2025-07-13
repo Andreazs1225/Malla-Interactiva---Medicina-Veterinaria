@@ -1,0 +1,142 @@
+/* Paleta de azules */
+:root {
+  --azul-claro: #e3f2fd;
+  --azul-intermedio: #90caf9;
+  --azul-intenso: #2196f3;
+  --azul-oscuro: #0d47a1;
+  --gris-bloqueado: #cfd8dc;
+  --verde-aprobado: #a5d6a7;
+  --borde-radius: 12px;
+  --duracion-transicion: 0.25s;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--azul-claro);
+  color: #033;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--azul-intenso);
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+h1 {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+}
+
+main {
+  flex: 1;
+  padding: 2rem clamp(1rem, 5vw, 4rem);
+}
+
+/* ---- Ciclos -------------------------------------------------------- */
+.ciclo {
+  margin-bottom: 3rem;
+}
+
+.ciclo__titulo {
+  margin: 0 0 1rem;
+  color: var(--azul-oscuro);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+/* ---- Tarjetas de materias ------------------------------------------ */
+.curso {
+  background: var(--azul-intermedio);
+  border: 3px solid var(--azul-intenso);
+  border-radius: var(--borde-radius);
+  padding: 0.75rem;
+  width: 220px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: transform var(--duracion-transicion), opacity var(--duracion-transicion);
+}
+
+.curso:hover {
+  transform: translateY(-4px);
+}
+
+/* Estado bloqueado */
+.curso.bloqueado {
+  background: var(--gris-bloqueado);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Estado aprobado */
+.curso.aprobado {
+  background: var(--verde-aprobado);
+  border-color: #2e7d32;
+}
+
+/* Contenedor de grid */
+.ciclo__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.curso__nombre {
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.curso input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.curso input:disabled {
+  background: #eceff1;
+  color: #666;
+}
+/* 🎨 Leyenda de colores */
+.leyenda {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.color {
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.color.aprobado { background-color: #4caf50; }
+.color.reprobado { background-color: #e53935; }
+.color.desbloqueado { background-color: #42a5f5; }
+.color.bloqueado { background-color: #9e9e9e; }
+
+/* Cambiar el color del encabezado a un azul más suave */
+header {
+  background: #42a5f5;
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
